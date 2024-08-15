@@ -46,7 +46,7 @@ Este projeto utiliza as seguintes dependências:
 
 ## Estrutura do Banco de Dados
 
-A estrutura do banco de dados está documentada no arquivo [estrutura_banco.md](estrutura_banco.md).
+A estrutura do banco de dados está documentada no arquivo [dbcalhas.md](dbcalhas.md).
 
 ## Como Executar o Projeto
 
