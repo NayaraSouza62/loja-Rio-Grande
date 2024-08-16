@@ -1,0 +1,244 @@
+<!-- Created with Jaspersoft Studio version 7.0.0.final using JasperReports Library version 7.0.0-b478feaa9aab4375eba71de77b4ca138ad2f62aa  -->
+<jasperReport name="RelatorioOs" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fb1d88b3-633f-4ca0-8310-0860ae7643b4">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ConnCalhas"/>
+	<parameter name="os" class="java.lang.Integer"/>
+	<query language="SQL"><![CDATA[SELECT calhas.tbclientes.idcli,
+       calhas.tbclientes.fone,
+       calhas.tbclientes.endcli,
+       calhas.tbclientes.cpf,
+       calhas.tbclientes.nomecli,
+       calhas.tbos.os,
+       calhas.tbos.data_os,
+     
+       calhas.tbos.situacao,
+       calhas.tbos.material,
+       calhas.tbos.valor,
+       calhas.tbos.vendedor,
+       calhas.tbos.formapto
+FROM calhas.tbos
+INNER JOIN calhas.tbclientes ON calhas.tbos.idcli = calhas.tbclientes.idcli
+WHERE calhas.tbos.os = $P{os}
+]]></query>
+	<field name="idcli" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="idcli"/>
+		<property name="com.jaspersoft.studio.field.label" value="idcli"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbclientes"/>
+	</field>
+	<field name="nomecli" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nomecli"/>
+		<property name="com.jaspersoft.studio.field.label" value="nomecli"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbclientes"/>
+	</field>
+	<field name="fone" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="fone"/>
+		<property name="com.jaspersoft.studio.field.label" value="fone"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbclientes"/>
+	</field>
+	<field name="endcli" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="endcli"/>
+		<property name="com.jaspersoft.studio.field.label" value="endcli"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbclientes"/>
+	</field>
+	<field name="cpf" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cpf"/>
+		<property name="com.jaspersoft.studio.field.label" value="cpf"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbclientes"/>
+	</field>
+	<field name="os" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="os"/>
+		<property name="com.jaspersoft.studio.field.label" value="os"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbos"/>
+	</field>
+	<field name="data_os" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="data_os"/>
+		<property name="com.jaspersoft.studio.field.label" value="data_os"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbos"/>
+	</field>
+	<field name="situacao" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="situacao"/>
+		<property name="com.jaspersoft.studio.field.label" value="situacao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbos"/>
+	</field>
+	<field name="material" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="material"/>
+		<property name="com.jaspersoft.studio.field.label" value="material"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbos"/>
+	</field>
+	<field name="valor" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="valor"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbos"/>
+	</field>
+	<field name="vendedor" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="vendedor"/>
+		<property name="com.jaspersoft.studio.field.label" value="vendedor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbos"/>
+	</field>
+	<field name="formapto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="formapto"/>
+		<property name="com.jaspersoft.studio.field.label" value="formapto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbos"/>
+	</field>
+	<group name="idcli">
+		<expression><![CDATA[$F{idcli}]]></expression>
+	</group>
+	<group name="os">
+		<expression><![CDATA[$F{os}]]></expression>
+	</group>
+	<group name="data_os">
+		<expression><![CDATA[$F{data_os}]]></expression>
+	</group>
+	<background splitType="Stretch"/>
+	<title height="79" splitType="Stretch">
+		<element kind="textField" uuid="2f0f70cd-1072-4e12-b05a-794f7dba7ade" x="-10" y="9" width="300" height="33" fontSize="24.0" hTextAlign="Left">
+			<expression><![CDATA["Ordem de servico:  " + $F{os}]]></expression>
+		</element>
+		<element kind="textField" uuid="64853e9f-4d7b-436f-b218-8218025081df" x="460" y="9" width="110" height="30" fontSize="10.0" pattern="M/d/yy h:mm a">
+			<expression><![CDATA[new java.util.Date()]]></expression>
+		</element>
+	</title>
+	<pageHeader splitType="Stretch"/>
+	<columnHeader splitType="Stretch"/>
+	<detail>
+		<band height="407" splitType="Stretch">
+			<element kind="textField" uuid="940c4f31-a30f-42a9-ad58-e3caf2e1220c" x="430" y="10" width="130" height="30" hTextAlign="Center">
+				<expression><![CDATA["Data: " + $F{data_os}]]></expression>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="ed754388-c78e-44d5-82d3-37fe7dd4943e" x="-11" y="10" width="140" height="30" hTextAlign="Center">
+				<expression><![CDATA["Cliente:" + $F{nomecli}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a1cc4961-6bf0-440a-aac5-5a3bcd00ac8f"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="263653de-ad47-46ba-a8ad-7eeb1deef0fb" x="130" y="10" width="60" height="30" hTextAlign="Center">
+				<expression><![CDATA["Id " + $F{idcli}]]></expression>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="89febe9a-3e6c-4a48-b39f-6cf524b59a26" x="190" y="10" width="60" height="30" hTextAlign="Center">
+				<expression><![CDATA["OS:  " +$F{os}]]></expression>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="223c3b5e-f274-44d2-85ab-23d17964eb0d" x="250" y="10" width="180" height="30" hTextAlign="Center">
+				<expression><![CDATA["Endereço: " + $F{endcli}]]></expression>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="25905170-9acb-4a00-b602-fc38317d719a" x="-10" y="50" width="139" height="30" hTextAlign="Center">
+				<expression><![CDATA["Situação: " +$F{situacao}]]></expression>
+			</element>
+			<element kind="textField" uuid="099dd133-15fe-41ca-9d56-700133214a96" x="130" y="50" width="120" height="30" hTextAlign="Center">
+				<expression><![CDATA["Tipo de Material: " + $F{material}]]></expression>
+			</element>
+			<element kind="textField" uuid="90b254e9-8f03-415d-ad08-7293fa2bd4a2" x="-10" y="80" width="100" height="30" hTextAlign="Center">
+				<expression><![CDATA["Valor: " + $F{valor}]]></expression>
+			</element>
+			<element kind="textField" uuid="cb459090-ed3b-42c4-b607-70328f3ee58d" x="250" y="50" width="110" height="30">
+				<expression><![CDATA["Vendedor: " +$F{vendedor}]]></expression>
+			</element>
+			<element kind="textField" uuid="eee44bcd-4387-4235-b40c-548d5b48bd76" x="360" y="50" width="140" height="30">
+				<expression><![CDATA["Telefone: " + $F{fone}]]></expression>
+			</element>
+			<element kind="textField" uuid="d941b732-8201-40a4-a731-929f3b41a787" x="-10" y="110" width="560" height="100" fontSize="14.0">
+				<expression><![CDATA["  Observações: "]]></expression>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="f8e23929-7be1-462d-8c1e-2ecc488c470f" x="-10" y="230" width="150" height="20" fontSize="14.0" bold="true">
+				<expression><![CDATA["VIA DO CLIENTE"]]></expression>
+			</element>
+			<element kind="textField" uuid="d10ae0b6-7409-4e5b-bfe3-ec0005d6ee32" x="-10" y="310" width="140" height="30" hTextAlign="Center">
+				<expression><![CDATA["Cliente:" + $F{nomecli}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a1cc4961-6bf0-440a-aac5-5a3bcd00ac8f"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="8b7f0991-f3f2-429f-b2c8-c2775cdb9385" x="130" y="310" width="60" height="30" hTextAlign="Center">
+				<expression><![CDATA["OS:  " +$F{os}]]></expression>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="e5778980-887f-4d13-9e7e-1262ad55eb7c" x="190" y="310" width="180" height="30" hTextAlign="Center">
+				<expression><![CDATA["Endereço: " + $F{endcli}]]></expression>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="acef171a-3bc5-48bb-9344-ec49117aa4d0" x="370" y="310" width="130" height="30" hTextAlign="Center">
+				<expression><![CDATA["Data: " + $F{data_os}]]></expression>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="3a308904-0ad9-4ba2-b8ac-48ef88d2892f" x="-10" y="350" width="180" height="30" hTextAlign="Center">
+				<expression><![CDATA["Situação: " +$F{situacao}]]></expression>
+			</element>
+			<element kind="textField" uuid="0008a38a-d4cc-49b0-af31-2510ee14c2ed" x="170" y="350" width="100" height="36" hTextAlign="Center">
+				<expression><![CDATA["Valor: " + $F{valor}]]></expression>
+			</element>
+			<element kind="textField" uuid="31cf08cf-de02-497d-ac55-3e1d2ee30761" x="270" y="350" width="100" height="25">
+				<expression><![CDATA["Telefone: " + $F{fone}]]></expression>
+			</element>
+			<element kind="textField" uuid="c7419876-60a8-47b8-afd2-c10174990f70" x="90" y="80" width="130" height="30">
+				<expression><![CDATA["Forma de Pagamento" +$F{formapto}]]></expression>
+			</element>
+			<element kind="textField" uuid="b1c3c35b-0102-42d4-be49-2b23489a664f" x="-10" y="260" width="190" height="20" fontSize="12.0" bold="true">
+				<expression><![CDATA["Calhas Rio Grande da Serra"]]></expression>
+			</element>
+			<element kind="textField" uuid="a47e0bf5-022e-4932-9e5d-dfbc564a968a" x="190" y="257" width="80" height="26" fontSize="12.0" bold="true">
+				<expression><![CDATA["Telefone: "]]></expression>
+			</element>
+			<element kind="textField" uuid="db4a1138-87b4-47ef-94ff-1ddb1c189aa7" x="260" y="257" width="90" height="26" fontSize="12.0">
+				<expression><![CDATA["(11)4826-8031"]]></expression>
+			</element>
+			<element kind="textField" uuid="3420cda0-ce17-4226-8e0c-cb436d5c8ca4" x="-10" y="280" width="187" height="20">
+				<expression><![CDATA["Av. Jean Lietaud, 119 - Jd Santa Tereza"]]></expression>
+			</element>
+		</band>
+	</detail>
+	<columnFooter splitType="Stretch"/>
+	<pageFooter splitType="Stretch"/>
+	<summary splitType="Stretch"/>
+</jasperReport>
