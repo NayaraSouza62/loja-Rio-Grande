@@ -2,6 +2,7 @@ package br.com.lojacalhas.telas;
 
 import java.sql.*;
 import br.com.lojacalhas.dal.ModuloConexao;
+import java.awt.HeadlessException;
 
 
 import javax.swing.JOptionPane;
@@ -385,7 +386,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
 
             }
 
-        } catch (Exception e) {
+        } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }
@@ -414,7 +415,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                 }
             }
 
-        } catch (Exception e) {
+        } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
 
@@ -434,7 +435,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                 limparCampos();
             }
             
-        } catch (Exception e) {
+        } catch (HeadlessException | SQLException e) {
              JOptionPane.showMessageDialog(null, e);
         }
    

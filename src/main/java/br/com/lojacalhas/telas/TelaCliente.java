@@ -2,6 +2,7 @@ package br.com.lojacalhas.telas;
 
 import java.sql.*;
 import br.com.lojacalhas.dal.ModuloConexao;
+import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -56,7 +57,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
                 
             }
             
-        } catch (Exception e) {
+        } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
         
@@ -89,7 +90,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
             });
         }
 
-    } catch (Exception e) {
+    } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, e);
     } finally {
         try {
@@ -146,7 +147,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
                 }
             }
             
-        } catch (Exception e) {
+        } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
         

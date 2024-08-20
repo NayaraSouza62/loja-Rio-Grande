@@ -2,6 +2,7 @@ package br.com.lojacalhas.telas;
 
 import br.com.lojacalhas.dal.ModuloConexao;
 import java.awt.Desktop;
+import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
 
@@ -275,11 +276,11 @@ public class TelaPrincipal1 extends javax.swing.JFrame {
         
         // Abrir o PDF com o visualizador padrão do sistema
         if (Desktop.isDesktopSupported()) {
-            Desktop desktop = Desktop.getDesktop();
-            if (desktop.isSupported(Desktop.Action.OPEN)) {
+            Desktop telapdf = Desktop.getDesktop();
+            if (telapdf.isSupported(Desktop.Action.OPEN)) {
                 File pdfFile = new File(caminhoPdf);
                 if (pdfFile.exists()) {
-                    desktop.open(pdfFile);
+                    telapdf.open(pdfFile);
                 } else {
                     JOptionPane.showMessageDialog(null, "Arquivo PDF não encontrado: " + caminhoPdf);
                 }
@@ -294,7 +295,7 @@ public class TelaPrincipal1 extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Erro ao gerar relatório: " + e.getMessage());
     } catch (IOException e) {
         JOptionPane.showMessageDialog(null, "Erro ao abrir o arquivo PDF: " + e.getMessage());
-    } catch (Exception e) {
+    } catch (HeadlessException e) {
         JOptionPane.showMessageDialog(null, "Erro inesperado: " + e.getMessage());
     }
 
@@ -318,11 +319,11 @@ public class TelaPrincipal1 extends javax.swing.JFrame {
         
         // Abrir o PDF com o visualizador padrão do sistema
         if (Desktop.isDesktopSupported()) {
-            Desktop desktop = Desktop.getDesktop();
-            if (desktop.isSupported(Desktop.Action.OPEN)) {
+            Desktop telapdf = Desktop.getDesktop();
+            if (telapdf.isSupported(Desktop.Action.OPEN)) {
                 File pdfFile = new File(caminhoPdf);
                 if (pdfFile.exists()) {
-                    desktop.open(pdfFile);
+                    telapdf.open(pdfFile);
                 } else {
                     JOptionPane.showMessageDialog(null, "Arquivo PDF não encontrado: " + caminhoPdf);
                 }
@@ -337,7 +338,7 @@ public class TelaPrincipal1 extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Erro ao gerar relatório: " + e.getMessage());
     } catch (IOException e) {
         JOptionPane.showMessageDialog(null, "Erro ao abrir o arquivo PDF: " + e.getMessage());
-    } catch (Exception e) {
+    } catch (HeadlessException e) {
         JOptionPane.showMessageDialog(null, "Erro inesperado: " + e.getMessage());
     }
 

@@ -6,20 +6,16 @@ package br.com.lojacalhas.telas;
 import java.sql.*;
 import br.com.lojacalhas.dal.ModuloConexao;
 import java.awt.Desktop;
+import java.awt.HeadlessException;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
-import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
-
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.view.JasperViewer;
 
 
 
@@ -85,14 +81,13 @@ public class TelaOs extends javax.swing.JInternalFrame {
         
         }
 
-         } catch (Exception e) {
+         } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, e);
     } finally {
         try {
             if (rs != null) rs.close();
             if (pst != null) pst.close();
         } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
     }
@@ -126,7 +121,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
             }
 
-        } catch (Exception e) {
+        } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(null, e);
 
         }
@@ -164,7 +159,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
             }
 
-        } catch (Exception e) {
+        } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(null, e);
 
         }
@@ -226,7 +221,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "OS não encontrada.");
         }
 
-    } catch (Exception e) {
+    } catch (HeadlessException | SQLException e) {
         JOptionPane.showMessageDialog(null, e);
         System.out.println(e);
     }
@@ -269,7 +264,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
             }
 
-        } catch (Exception e) {
+        } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(null, e);
 
         }
@@ -293,7 +288,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
                     btnConsultar.setEnabled(true);
                 } 
                 
-            } catch (Exception e) {
+            } catch (HeadlessException | SQLException e) {
         JOptionPane.showMessageDialog(null, e);
 
             }
@@ -753,7 +748,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
                
            }
            
-       } catch (Exception e) {
+       } catch (SQLException e) {
                        JOptionPane.showMessageDialog(null, "Erro ao imprimir OS: " + e.getMessage());
 
        }
@@ -804,7 +799,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
         // Classe para criar um filtro (neste caso, o número da OS)
         HashMap<String, Object> filtro = new HashMap<>();
-        filtro.put("os", Integer.parseInt(txtOs.getText()));
+        filtro.put("os", Integer.valueOf(txtOs.getText()));
 
         // Caminho do arquivo Jasper
         String caminhoRel = "src/main/java/br/com/lojacalhas/jasper/RelatorioOS.jasper";
@@ -822,8 +817,8 @@ public class TelaOs extends javax.swing.JInternalFrame {
             Desktop.getDesktop().open(pdfFile);
         }
 
-    } catch (Exception e) {
-        e.printStackTrace(); // Para depuração
+    } catch (HeadlessException | IOException | NumberFormatException | JRException e) { // Para depuração
+        // Para depuração
         JOptionPane.showMessageDialog(null, "Erro ao gerar relatório: " + e.getMessage());
     }
 
