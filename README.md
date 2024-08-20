@@ -46,4 +46,10 @@ Este projeto utiliza as seguintes dependências:
    ```bash
    mvn clean install
 
+   ## Créditos e Licença dos Ícones
+
+
+### Licença dos Ícones
+Os ícones usados são fornecidos por [Flaticon](https://www.flaticon.com) e estão sujeitos à licença da plataforma.
+
 
