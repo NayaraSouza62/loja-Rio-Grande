@@ -6,76 +6,80 @@ import java.awt.HeadlessException;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 
+/**
+ * TelaLogin é a classe responsável pela interface de login do sistema.
+ * Permite ao usuário inserir credenciais para acessar a aplicação.
+ */
 public class TelaLogin extends javax.swing.JFrame {
 
-    Connection conn = null; //chamando o objeto que criamos no moduloConexão.
-    PreparedStatement pst = null; // executa códigos sql em java.
-    ResultSet rs = null; //exibe o resultado das consultas (query)
-    
-    
-
+    // Variáveis de conexão com o banco de dados
+    Connection conn = null; // Objeto para gerenciar a conexão com o banco de dados.
+    PreparedStatement pst = null; // Objeto para executar comandos SQL preparados.
+    ResultSet rs = null; // Objeto para armazenar o resultado das consultas SQL.
    
-
+    
     public TelaLogin() {
         initComponents();
-        conn = ModuloConexao.getConexao(); //chamamos o método criado para tentar a conexão
-        System.out.println(conn); //Se tudo ocorrer bem, irá aparecer a String de conexão. 
+        conn = ModuloConexao.getConexao(); // Obtém a conexão com o banco de dados.
+        System.out.println(conn); // Imprime a conexão no console para verificação.
         if (conn == null) {
-         JOptionPane.showMessageDialog(null, "Sem conexão com o banco de dados. Favor entrar em contato com o suporte.");
-
+            JOptionPane.showMessageDialog(null, "Sem conexão com o banco de dados. Favor entrar em contato com o suporte.");
         } 
-
     }
     
-     public void logar() {
-    /* Código abaixo serve para acessar o usuario e senha que for digitado, e fazer
-       a consulta(query) no banco de dados. Se a query for correspondida, executa 
-       a tomada de decisão, onde irá abrir a TelaPrincipal. 
-    */
-    String sql = "select * from tbusuarios where login=? and senha=?";
-    try {
-        pst = conn.prepareStatement(sql);
-        pst.setString(1, txtUsuario.getText());
+   
+    public void logar() {
+       /**
+     * Método para realizar o login do usuário.
+     * - Verifica as credenciais do usuário fornecidas na interface com as informações no banco de dados.
+     * - Se a autenticação for bem-sucedida, abre a TelaPrincipal com permissões de acesso apropriadas.
+     * - Caso contrário, exibe uma mensagem de erro.
+     */
+        String sql = "select * from tbusuarios where login=? and senha=?";
+        try {
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txtUsuario.getText());
 
-        // Obtém a senha de forma segura
-        char[] senhaArray = pwdSenha.getPassword(); // Usando getPassword()
-        pst.setString(2, new String(senhaArray)); // Convertendo senha para String
-        
-        // a linha abaixo executa a Query
-        rs = pst.executeQuery();
+            // Obtém a senha de forma segura
+            char[] senhaArray = pwdSenha.getPassword(); // Obtém a senha como um array de caracteres.
+            pst.setString(2, new String(senhaArray)); // Converte o array de caracteres para String.
+            
+            // Executa a consulta SQL
+            rs = pst.executeQuery();
 
-        if (rs.next()) {
-            // Uma observação: foi criada também uma tomada de decisão-Se o perfil for admin, o mesmo terá acesso completo ao sistema, diferente do perfil user.
-            String perfil = rs.getString(6);
-            if (perfil.equals("admin")) {
-                TelaPrincipal1 tela = new TelaPrincipal1();
-                tela.setVisible(true);
-                TelaPrincipal1.menuCadUsu.setEnabled(true);
-                TelaPrincipal1.menuRel.setEnabled(true);
-                String usuario = rs.getString(2);
-                TelaPrincipal1.lblUsuario.setText("Administrador, " + usuario);
+            if (rs.next()) {
+                // Verifica o perfil do usuário e define as permissões na TelaPrincipal
+                String perfil = rs.getString(6);
+                if (perfil.equals("admin")) {
+                    TelaPrincipal1 tela = new TelaPrincipal1();
+                    tela.setVisible(true);
+                    TelaPrincipal1.menuCadUsu.setEnabled(true); // Habilita o menu de cadastro de usuário para admin.
+                    TelaPrincipal1.menuRel.setEnabled(true); // Habilita o menu de relatórios para admin.
+                    String usuario = rs.getString(2);
+                    TelaPrincipal1.lblUsuario.setText("Administrador, " + usuario); // Define o nome do usuário na TelaPrincipal.
 
-                this.dispose();
+                    this.dispose(); // Fecha a tela de login.
+                } else {
+                    TelaPrincipal1 tela = new TelaPrincipal1();
+                    tela.setVisible(true);
+                    String usuario = rs.getString(2);
+                    TelaPrincipal1.lblUsuario.setText(usuario); // Define o nome do usuário na TelaPrincipal.
+
+                    this.dispose(); // Fecha a tela de login.
+                    conn.close(); // Fecha a conexão com o banco de dados.
+                }
             } else {
-                TelaPrincipal1 tela = new TelaPrincipal1();
-                tela.setVisible(true);
-                String usuario = rs.getString(2);
-                TelaPrincipal1.lblUsuario.setText(usuario);
-
-                this.dispose();
-                conn.close();
+                JOptionPane.showMessageDialog(null, "Usuário e/ou senha inválidos."); // Mensagem de erro para credenciais inválidas.
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Usuário e/ou senha inválidos.");
-        }
 
-    } catch (HeadlessException | SQLException e) {
-        JOptionPane.showMessageDialog(null, e);
-    } finally {
-        // Limpa o array de senha da memória para maior segurança
-        Arrays.fill(pwdSenha.getPassword(), '0');
+        } catch (HeadlessException | SQLException e) {
+            JOptionPane.showMessageDialog(null, e); // Mensagem de erro para exceções.
+        } finally {
+            // Limpa o array de senha da memória para maior segurança.
+            Arrays.fill(pwdSenha.getPassword(), '0');
+        }
     }
-}
+
 
     /**
      * This method is called from within the constructor to initialize the form.

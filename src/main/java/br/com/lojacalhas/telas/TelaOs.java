@@ -1,7 +1,4 @@
-
-
 package br.com.lojacalhas.telas;
-
 
 import java.sql.*;
 import br.com.lojacalhas.dal.ModuloConexao;
@@ -17,16 +14,11 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 
-
-
-
 public class TelaOs extends javax.swing.JInternalFrame {
 
     Connection conn = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
-   
-   
 
     public TelaOs() {
         initComponents();
@@ -34,105 +26,77 @@ public class TelaOs extends javax.swing.JInternalFrame {
     }
 
     public void limparCampos() {
-
-  txtOs.setText("");
-    txtData.setText("");
-    cboSituacao.setSelectedItem(""); 
-    txtTipoMaterial.setText("");
-    txtValor.setText("");
-    txtVendedor.setText("");
-    cboFormaPgto.setSelectedItem("");
-    txtIdCli.setText("");
-    // Limpa a tabela
-    tblClientes.setModel(new javax.swing.table.DefaultTableModel(
-        new Object[][] {},
-        new String[] {
-            "Id", "Nome", "Telefone", "Endereço", "Cpf"
-        }
-    ));
+        // Este método serve para toda vez que for necessário fazer a limpeza nos componetes.
+        txtOs.setText("");
+        txtData.setText("");
+        cboSituacao.setSelectedItem("");
+        txtTipoMaterial.setText("");
+        txtValor.setText("");
+        txtVendedor.setText("");
+        cboFormaPgto.setSelectedItem("");
+        txtIdCli.setText("");
+        // Limpa a tabela
+        tblClientes.setModel(new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{
+                    "Id", "Nome", "Telefone", "Endereço", "Cpf"
+                }
+        ));
     }
 
-    public void consultaCliente() {
-        //pesquisando cliente na tabela
+    public void consultaClienteTabela() {
+// Método para pesquisa de clientes. À medida que o usuário digita o nome, a tabela é atualizada automaticamente
         String sql = "select idcli as Id, nomecli as Nome, fone as Telefone, endcli as Endereço, cpf as Cpf from tbclientes where nomecli like ?";
         try {
             pst = conn.prepareStatement(sql);
             pst.setString(1, txtCliPesquisar.getText() + "%");
             rs = pst.executeQuery();
-            
-            
-             // Limpa a tabela antes de preencher com novos resultados
-        tblClientes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {},
-            new String [] {
-                "Id", "Nome", "Telefone", "Endereço", "Cpf"
-            }
-        ));
-         // Preenche a tabela com os resultados da pesquisa
-        while (rs.next()) {
-            ((DefaultTableModel) tblClientes.getModel()).addRow(new Object[]{
-                rs.getInt("Id"),
-                rs.getString("Nome"),
-                rs.getString("Telefone"),
-                rs.getString("Endereço"),
-                rs.getString("Cpf")
-            });
-            
-        
-        }
 
-         } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, e);
-    } finally {
-        try {
-            if (rs != null) rs.close();
-            if (pst != null) pst.close();
+            // Limpa a tabela antes de preencher com novos resultados
+            tblClientes.setModel(new javax.swing.table.DefaultTableModel(
+                    new Object[][]{},
+                    new String[]{
+                        "Id", "Nome", "Telefone", "Endereço", "Cpf"
+                    }
+            ));
+            // Preenche a tabela com os resultados da pesquisa
+            while (rs.next()) {
+                ((DefaultTableModel) tblClientes.getModel()).addRow(new Object[]{
+                    rs.getInt("Id"),
+                    rs.getString("Nome"),
+                    rs.getString("Telefone"),
+                    rs.getString("Endereço"),
+                    rs.getString("Cpf")
+                });
+
+            }
+
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
         }
-    }
     }
 
     public void setarCampos() {
+        // Método essencial que preenche automaticamente os campos com os dados do cliente selecionado
         int setar = tblClientes.getSelectedRow(); // linha selecionada
         txtIdCli.setText(tblClientes.getModel().getValueAt(setar, 0).toString());
     }
 
-    public void outrasInformacoes() {
-        String sql = "insert into tbos(situacao, material, vendedor, valor, formapto) values (?, ?, ?, ?, ?)";
-        try {
-            pst = conn.prepareStatement(sql);
-            pst.setString(1, cboSituacao.getSelectedItem().toString());
-            pst.setString(2, txtTipoMaterial.getText());
-            pst.setString(3, txtVendedor.getText());
-            pst.setString(4, txtValor.getText());
-            pst.setString(5, cboFormaPgto.getSelectedItem().toString());
-
-            if (txtTipoMaterial.getText().isEmpty() || txtVendedor.getText().isEmpty()
-                    || txtValor.getText().isEmpty() || cboFormaPgto.getItemCount() == 0) {
-                JOptionPane.showMessageDialog(null, "Preencha os campos obrigatórios. * ");
-            } else {
-                int autenticacao = pst.executeUpdate();
-                if (autenticacao > 0) {
-                    JOptionPane.showMessageDialog(null, "OS emitida com sucesso");
-                    limparCampos();
-                } else {
-                    JOptionPane.showMessageDialog(null, "erro");
-                }
-
-            }
-
-        } catch (HeadlessException | SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
-
-        }
-    }
-
     private void emitirOs() {
+        /**
+ * Insere uma nova Ordem de Serviço (OS) na tabela `tbos`.
+ * 
+ * - Prepara a consulta SQL e define os valores dos campos da OS.
+ * - Verifica se todos os campos obrigatórios estão preenchidos.
+ * - Se os campos estiverem corretos, executa a inserção no banco de dados.
+ * - Mostra uma mensagem de sucesso se a OS for inserida com sucesso.
+ * - Habilita os botões de impressão, exclusão e alteração.
+ * - Exibe mensagens de erro em caso de falha ou problemas de banco de dados.
+ */
         String sql = "insert into tbos( situacao, material, valor, vendedor, idcli, formapto ) values(?, ?, ?, ?, ?, ?)";
         try {
             pst = conn.prepareStatement(sql);
-           
-           
+
             pst.setString(1, cboSituacao.getSelectedItem().toString());
             pst.setString(2, txtTipoMaterial.getText());
             pst.setString(3, txtValor.getText().replace(",", "."));
@@ -140,7 +104,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
             pst.setString(5, txtIdCli.getText());
             pst.setString(6, cboFormaPgto.getSelectedItem().toString());
             //validação dos campos obrigatórios:
-            if (txtTipoMaterial.getText().isEmpty()|| cboSituacao.getSelectedItem().equals("") || txtVendedor.getText().isEmpty()
+            if (txtTipoMaterial.getText().isEmpty() || cboSituacao.getSelectedItem().equals("") || txtVendedor.getText().isEmpty()
                     || txtValor.getText().isEmpty() || cboFormaPgto.getItemCount() == 0) {
                 JOptionPane.showMessageDialog(null, "Preencha os campos obrigatórios. * ");
             } else {
@@ -151,7 +115,6 @@ public class TelaOs extends javax.swing.JInternalFrame {
                     btnImprimir.setEnabled(true);
                     btnExcluirOs.setEnabled(true);
                     btnAlterar.setEnabled(true);
-                    
 
                 } else {
                     JOptionPane.showMessageDialog(null, "erro");
@@ -165,81 +128,99 @@ public class TelaOs extends javax.swing.JInternalFrame {
         }
     }
 
-   private void pesquisarOs() {
-    btnAlterar.setEnabled(true);
-   btnExcluirOs.setEnabled(true);
-    btnImprimir.setEnabled(true);
+    private void pesquisarOs() {
+        /**
+ * Pesquisa uma Ordem de Serviço (OS) pelo número fornecido e preenche os campos com as informações correspondentes.
+ * 
+ * - Habilita os botões de alteração, exclusão e impressão.
+ * - Solicita ao usuário que informe o número da OS a ser pesquisada.
+ * - Executa uma consulta SQL com INNER JOIN para obter detalhes da OS e informações do cliente associado.
+ * - Se a OS for encontrada, preenche os campos de texto e a tabela com as informações obtidas.
+ * - Desabilita os botões de adicionar e consultar após encontrar a OS.
+ * - Exibe uma mensagem de erro se a OS não for encontrada.
+ */
+        btnAlterar.setEnabled(true);
+        btnExcluirOs.setEnabled(true);
+        btnImprimir.setEnabled(true);
 
-    // Entrada de dados para o número da OS
-    String numOs = JOptionPane.showInputDialog("Digite o número da OS");
-    
-    // Consulta com INNER JOIN
-    String sql = "SELECT tbos.*, tbclientes.nomecli, tbclientes.fone, tbclientes.endcli, tbclientes.cpf " +
-                 "FROM tbos " +
-                 "INNER JOIN tbclientes ON tbos.idcli = tbclientes.idcli " +
-                 "WHERE tbos.os = ?";
-    
-    try {
-        pst = conn.prepareStatement(sql);
-        pst.setString(1, numOs);
-        rs = pst.executeQuery();
-        
-        txtData.setEnabled(true);
-        txtOs.setEnabled(true);
-        // Limpa a tabela antes de preencher com novos resultados
-        tblClientes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object[][] {},
-            new String[] {
-                "Id", "Nome", "Telefone", "Endereço", "Cpf"
-            }
-        ));
+        // Entrada de dados para o número da OS
+        String numOs = JOptionPane.showInputDialog("Digite o número da OS");
 
-        // Verifica se há um registro correspondente
-        if (rs.next()) {
-            // Preenche os campos com os dados da tabela tbos
-            txtOs.setText(rs.getString("os")); 
-            txtData.setText(rs.getString("data_os")); 
-            cboSituacao.setSelectedItem(rs.getString("situacao"));
-            txtTipoMaterial.setText(rs.getString("material"));
-            txtValor.setText(rs.getString("valor")); 
-            txtVendedor.setText(rs.getString("vendedor"));
-            cboFormaPgto.setSelectedItem(rs.getString("formapto")); 
-            txtIdCli.setText(rs.getString("idcli")); 
-            
-            // Preenche a tabela com os dados do cliente
-            ((DefaultTableModel) tblClientes.getModel()).addRow(new Object[]{
-                rs.getString("idcli"), 
-                rs.getString("nomecli"),
-                rs.getString("fone"), 
-                rs.getString("endcli"), 
-                rs.getString("cpf")
-            });
+        // Consulta com INNER JOIN
+        String sql = "SELECT tbos.*, tbclientes.nomecli, tbclientes.fone, tbclientes.endcli, tbclientes.cpf "
+                + "FROM tbos "
+                + "INNER JOIN tbclientes ON tbos.idcli = tbclientes.idcli "
+                + "WHERE tbos.os = ?";
 
-            btnAdicionar.setEnabled(false);
-            btnConsultar.setEnabled(false);
-        } else {
-            JOptionPane.showMessageDialog(null, "OS não encontrada.");
-        }
-
-    } catch (HeadlessException | SQLException e) {
-        JOptionPane.showMessageDialog(null, e);
-        System.out.println(e);
-    }
-}
-
-
-    
-    
-    private void atualizarOs(){
-     String sql = "update tbos set situacao=? , material=?, valor=? , vendedor=?, formapto=? where os = ? ";
-     try {
+        try {
             pst = conn.prepareStatement(sql);
-           
+            pst.setString(1, numOs);
+            rs = pst.executeQuery();
+
+            txtData.setEnabled(true);
+            txtOs.setEnabled(true);
+            // Limpa a tabela antes de preencher com novos resultados
+            tblClientes.setModel(new javax.swing.table.DefaultTableModel(
+                    new Object[][]{},
+                    new String[]{
+                        "Id", "Nome", "Telefone", "Endereço", "Cpf"
+                    }
+            ));
+
+            // Verifica se há um registro correspondente
+            if (rs.next()) {
+                // Preenche os campos com os dados da tabela tbos
+                txtOs.setText(rs.getString("os"));
+                txtData.setText(rs.getString("data_os"));
+                cboSituacao.setSelectedItem(rs.getString("situacao"));
+                txtTipoMaterial.setText(rs.getString("material"));
+                txtValor.setText(rs.getString("valor"));
+                txtVendedor.setText(rs.getString("vendedor"));
+                cboFormaPgto.setSelectedItem(rs.getString("formapto"));
+                txtIdCli.setText(rs.getString("idcli"));
+
+                // Preenche a tabela com os dados do cliente
+                ((DefaultTableModel) tblClientes.getModel()).addRow(new Object[]{
+                    rs.getString("idcli"),
+                    rs.getString("nomecli"),
+                    rs.getString("fone"),
+                    rs.getString("endcli"),
+                    rs.getString("cpf")
+                });
+
+                btnAdicionar.setEnabled(false);
+                btnConsultar.setEnabled(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "OS não encontrada.");
+            }
+
+        } catch (HeadlessException | SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+            System.out.println(e);
+        }
+    }
+
+    private void atualizarOs() {
+        /**
+ * Atualiza uma Ordem de Serviço (OS) existente com os novos valores fornecidos.
+ * 
+ * - Prepara a consulta SQL para atualizar os dados da OS na tabela `tbos`.
+ * - Define os valores dos campos a serem atualizados com base na entrada do usuário.
+ * - Verifica se todos os campos obrigatórios estão preenchidos.
+ * - Se os campos estiverem corretos, executa a atualização no banco de dados.
+ * - Mostra uma mensagem de sucesso se a OS for atualizada com sucesso.
+ * - Limpa os campos e reabilita os botões de adicionar e consultar.
+ * - Exibe uma mensagem de erro em caso de falha na atualização.
+ */
+        String sql = "update tbos set situacao=? , material=?, valor=? , vendedor=?, formapto=? where os = ? ";
+        try {
+            pst = conn.prepareStatement(sql);
+
             pst.setString(1, cboSituacao.getSelectedItem().toString());
             pst.setString(2, txtTipoMaterial.getText());
             pst.setString(3, txtValor.getText().replace(",", "."));
             pst.setString(4, txtVendedor.getText());
-            
+
             pst.setString(5, cboFormaPgto.getSelectedItem().toString());
             pst.setString(6, txtOs.getText());
             //validação dos campos obrigatórios:
@@ -250,13 +231,12 @@ public class TelaOs extends javax.swing.JInternalFrame {
                 int autenticacao = pst.executeUpdate();
                 if (autenticacao > 0) {
                     JOptionPane.showMessageDialog(null, "OS alterada com sucesso");
-                    limparCampos();
+
                     txtOs.setText(null);
                     txtData.setText(null);
                     //habilitar componentes
                     btnAdicionar.setEnabled(true);
                     btnConsultar.setEnabled(true);
-                    
 
                 } else {
                     JOptionPane.showMessageDialog(null, "erro");
@@ -269,9 +249,18 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
         }
     }
-    
-    private void excluirOs(){
-     int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir esta OS?" , "Atenção", JOptionPane.YES_NO_OPTION);
+
+    private void excluirOs() {
+        /**
+ * Exclui uma Ordem de Serviço (OS) do banco de dados.
+ * 
+ * - Solicita confirmação ao usuário antes de excluir a OS.
+ * - Se o usuário confirmar, prepara a consulta SQL para deletar a OS da tabela `tbos`.
+ * - Executa a exclusão e mostra uma mensagem de sucesso se a OS for excluída.
+ * - Limpa os campos e reabilita os botões de adicionar e consultar.
+ * - Exibe uma mensagem de erro em caso de falha na exclusão.
+ */
+        int confirma = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir esta OS?", "Atenção", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
             String sql = "delete from tbos where os=? ";
             try {
@@ -286,16 +275,15 @@ public class TelaOs extends javax.swing.JInternalFrame {
                     //habilitar componentes
                     btnAdicionar.setEnabled(true);
                     btnConsultar.setEnabled(true);
-                } 
-                
+                    limparCampos();
+                }
+
             } catch (HeadlessException | SQLException e) {
-        JOptionPane.showMessageDialog(null, e);
+                JOptionPane.showMessageDialog(null, e);
 
             }
         }
     }
-    
-   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -735,30 +723,29 @@ public class TelaOs extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cboFormaPgtoActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-     
-    }//GEN-LAST:event_formInternalFrameOpened
-     
-   private void recuperarOs(){
-   String sql = "select max(os) from tbos";
-       try {
-           pst = conn.prepareStatement(sql);
-           rs = pst.executeQuery();
-           if (rs.next()) {
-               txtOs.setText(rs.getString(1));
-               
-           }
-           
-       } catch (SQLException e) {
-                       JOptionPane.showMessageDialog(null, "Erro ao imprimir OS: " + e.getMessage());
 
-       }
-   
-   }
-    
-    
-    
+    }//GEN-LAST:event_formInternalFrameOpened
+
+    private void recuperarOs() {
+        String sql = "select max(os) from tbos";
+        try {
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                txtOs.setText(rs.getString(1));
+
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao imprimir OS: " + e.getMessage());
+
+        }
+
+    }
+
+
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-         pesquisarOs();
+        pesquisarOs();
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
@@ -767,7 +754,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         // TODO add your handling code here:
-       atualizarOs();
+        atualizarOs();
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirOsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirOsActionPerformed
@@ -775,7 +762,7 @@ public class TelaOs extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnExcluirOsActionPerformed
 
     private void txtCliPesquisarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCliPesquisarKeyReleased
-       consultaCliente();
+        consultaClienteTabela();
     }//GEN-LAST:event_txtCliPesquisarKeyReleased
 
     private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
@@ -788,49 +775,44 @@ public class TelaOs extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtTipoMaterialActionPerformed
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
-   
-                                        
-    try {
-        // Verifique se o campo de texto não está vazio
-        if (txtOs.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Por favor, insira o número da OS.");
-            return;
+
+        try {
+            // Verifique se o campo de texto não está vazio
+            if (txtOs.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Por favor, insira o número da OS.");
+                return;
+            }
+
+            // Classe para criar um filtro (neste caso, o número da OS)
+            HashMap<String, Object> filtro = new HashMap<>();
+            filtro.put("os", Integer.valueOf(txtOs.getText()));
+
+            // Caminho do arquivo Jasper
+            String caminhoRel = "src/main/java/br/com/lojacalhas/jasper/RelatorioOS.jasper";
+
+            // Preencher o relatório com os parâmetros
+            JasperPrint jasperPrint = JasperFillManager.fillReport(caminhoRel, filtro, conn);
+
+            // Exportar o relatório para PDF
+            String caminhoPDF = "relatorio_os.pdf"; // Defina o caminho desejado para salvar o PDF
+            JasperExportManager.exportReportToPdfFile(jasperPrint, caminhoPDF);
+
+            // Tente abrir o PDF gerado
+            if (Desktop.isDesktopSupported()) {
+                File pdfFile = new File(caminhoPDF);
+                Desktop.getDesktop().open(pdfFile);
+            }
+
+        } catch (HeadlessException | IOException | NumberFormatException | JRException e) { // Para depuração
+            // Para depuração
+            JOptionPane.showMessageDialog(null, "Erro ao gerar relatório: " + e.getMessage());
         }
 
-        // Classe para criar um filtro (neste caso, o número da OS)
-        HashMap<String, Object> filtro = new HashMap<>();
-        filtro.put("os", Integer.valueOf(txtOs.getText()));
 
-        // Caminho do arquivo Jasper
-        String caminhoRel = "src/main/java/br/com/lojacalhas/jasper/RelatorioOS.jasper";
-
-        // Preencher o relatório com os parâmetros
-        JasperPrint jasperPrint = JasperFillManager.fillReport(caminhoRel, filtro, conn);
-
-        // Exportar o relatório para PDF
-        String caminhoPDF = "relatorio_os.pdf"; // Defina o caminho desejado para salvar o PDF
-        JasperExportManager.exportReportToPdfFile(jasperPrint, caminhoPDF);
-
-        // Tente abrir o PDF gerado
-        if (Desktop.isDesktopSupported()) {
-            File pdfFile = new File(caminhoPDF);
-            Desktop.getDesktop().open(pdfFile);
-        }
-
-    } catch (HeadlessException | IOException | NumberFormatException | JRException e) { // Para depuração
-        // Para depuração
-        JOptionPane.showMessageDialog(null, "Erro ao gerar relatório: " + e.getMessage());
-    }
-
-          
-
-
-
-                                                              
     }//GEN-LAST:event_btnImprimirActionPerformed
 
     private void btnLimparCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparCamposActionPerformed
-      limparCampos();
+        limparCampos();
     }//GEN-LAST:event_btnLimparCamposActionPerformed
 
 
@@ -868,5 +850,4 @@ public class TelaOs extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtVendedor;
     // End of variables declaration//GEN-END:variables
 
-   
 }

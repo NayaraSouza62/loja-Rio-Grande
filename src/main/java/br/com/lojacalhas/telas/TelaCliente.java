@@ -6,8 +6,14 @@ import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * Classe TelaCliente representa a interface de gerenciamento de clientes.
+ * Permite adicionar, pesquisar, alterar e limpar registros de clientes.
+ */
+
 public class TelaCliente extends javax.swing.JInternalFrame {
-    
+       // Conexão com o banco de dados
+ 
     Connection conn = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
@@ -23,18 +29,25 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         
         
     }
-    
+        
+
     public void limparCampos() {
+    // Este método serve para toda vez que for necessário fazer a limpeza nos componetes.
         txtIdCli.setText(null);
         txtCliNome.setText(null);
         txtCliTel.setText(null);
         txtCliEnd.setText(null);
         txtcpfCli.setText(null);
-        //trecho abaixo limpa os campos da tabela
         
     }
     
     public void adicionar() {
+         /**
+     * Adiciona um novo cliente ao banco de dados.
+     * - Preenche os campos da consulta SQL com os dados da interface.
+     * - Verifica se todos os campos obrigatórios estão preenchidos.
+     * - Executa a inserção no banco de dados e exibe mensagens de sucesso ou erro.
+     */
         String sql = "insert into tbclientes(nomecli, fone, endcli, cpf) values(?, ?, ?, ? ) ";
         try {
             pst = conn.prepareStatement(sql);
@@ -63,8 +76,12 @@ public class TelaCliente extends javax.swing.JInternalFrame {
         
     }
 
-    //método para pesquisar clientes pelo nome com filtro
     public void pesquisar_cliente() {
+         /**
+     * Pesquisa clientes pelo nome com filtro.
+     * - Executa uma consulta SQL para buscar clientes que correspondam ao nome fornecido.
+     * - Preenche a tabela com os resultados da pesquisa.
+     */
     String sql = "select idcli as Id, nomecli as Nome, fone as Telefone, endcli as Endereço, cpf as CPF from tbclientes where nomecli like ? ";
     try {
         pst = conn.prepareStatement(sql);
@@ -92,19 +109,17 @@ public class TelaCliente extends javax.swing.JInternalFrame {
 
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, e);
-    } finally {
-        try {
-            if (rs != null) rs.close();
-            if (pst != null) pst.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+   
     }
 }
 
      // a linha abaixo seta os campos.
 
     public void setar_campos() {
+         /**
+     * Preenche os campos de entrada da interface com os dados do cliente selecionado na tabela.
+     * - Acessa a linha selecionada na tabela e define os campos com os dados correspondentes.
+     */
     int setar = tblClientes.getSelectedRow(); // Acessa a linha selecionada
     if (setar >= 0) { // Verifica se uma linha foi realmente selecionada
         txtIdCli.setText(tblClientes.getModel().getValueAt(setar, 0).toString());
@@ -125,6 +140,12 @@ public class TelaCliente extends javax.swing.JInternalFrame {
     
     
     public void alterar() {
+         /**
+     * Altera os dados de um cliente existente.
+     * - Atualiza os dados do cliente na tabela `tbclientes` com base no ID fornecido.
+     * - Verifica se todos os campos obrigatórios estão preenchidos.
+     * - Executa a atualização no banco de dados e exibe mensagens de sucesso ou erro.
+     */
         String sql = "update tbclientes set nomecli=?, fone=? , endcli=?, cpf=? where idcli=?";
         try {
             pst = conn.prepareStatement(sql);
@@ -293,7 +314,7 @@ public class TelaCliente extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel5)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 609, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -342,34 +363,38 @@ public class TelaCliente extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 403, Short.MAX_VALUE)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 403, Short.MAX_VALUE)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtCliTel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(36, 36, 36)
+                                        .addComponent(txtIdCli, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtCliTel, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtcpfCli, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCliNome, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCliEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addComponent(txtIdCli, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGap(6, 6, 6)
+                                .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(42, 42, 42))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtcpfCli, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCliNome, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCliEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(42, 42, 42))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel7)
                 .addGap(0, 0, Short.MAX_VALUE))

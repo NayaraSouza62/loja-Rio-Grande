@@ -16,7 +16,10 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 
 
-
+/**
+ * TelaPrincipal1 é a classe principal da aplicação, que gerencia a tela inicial do sistema.
+ * Esta tela exibe o menu principal e gerencia a navegação entre diferentes funcionalidades.
+ */
 public class TelaPrincipal1 extends javax.swing.JFrame {
 
     Connection conn = null;

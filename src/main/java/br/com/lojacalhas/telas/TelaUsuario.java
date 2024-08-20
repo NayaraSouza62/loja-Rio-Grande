@@ -7,6 +7,10 @@ import java.awt.HeadlessException;
 
 import javax.swing.JOptionPane;
 
+/**
+ * Tela de gerenciamento de usuários. Permite adicionar, consultar, alterar e excluir usuários.
+ */
+
 public class TelaUsuario extends javax.swing.JInternalFrame {
 
     Connection conn = null;
