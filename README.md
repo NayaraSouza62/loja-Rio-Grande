@@ -46,8 +46,8 @@ Este projeto utiliza as seguintes dependências:
 
 ## Estrutura do Banco de Dados
 
-A estrutura do banco de dados está documentada no arquivo [dbcalhas.md](dbcalhas.md).
-A estruruta da query no JasperSoft para criação dos relatórios está documentada no arquivo [dbqueryJreport.md](dbqueryJreport.md).
+1. A estrutura do banco de dados está documentada no arquivo [dbcalhas.md](dbcalhas.md).
+2. A estruruta da query no JasperSoft para criação dos relatórios está documentada no arquivo [dbqueryJreport.md](dbqueryJreport.md).
 
 ## Como Executar o Projeto
 
