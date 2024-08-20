@@ -12,6 +12,24 @@ Este é um sistema de controle de Ordem de Serviço (OS) desenvolvido em Java. O
 - **Tabela de Clientes:** Exibe uma lista de clientes com informações como nome, telefone, endereço e CPF.
 - **Impressão:** Permite a impressão de OS, relatório de clientes e serviços em PDF.
 
+## Descrição da Interface e Funcionalidades
+
+Este sistema possui uma interface gráfica com os seguintes menus e funcionalidades:
+
+### Menu de Cadastro
+- **Cadastro de Clientes**: Permite adicionar, editar e excluir clientes. Inclui campos para inserir informações como nome, telefone, endereço e CPF.
+- **Cadastro de Ordem de Serviço (OS)**: Permite criar e gerenciar ordens de serviço associadas aos clientes. Inclui opções para adicionar, atualizar e excluir ordens de serviço.
+- **Cadastro de Serviços**: Permite registrar e gerenciar serviços oferecidos. Inclui campos para descrever e definir preços dos serviços.
+
+### Funcionalidades dos Menus
+- **CRUD**: Cada menu possui operações básicas de CRUD (Criar, Ler, Atualizar e Excluir) para gerenciar os dados.
+- **Botões de Impressão**: Em cada menu (Clientes, OS e Usuários), há botões para imprimir relatórios em PDF, facilitando a geração de documentos para consulta e arquivamento.
+- **Pesquisar**: Funcionalidade para buscar clientes e ordens de serviço existentes com base em critérios específicos.
+
+### Navegação
+- **Tela Principal**: Apresenta uma visão geral e acesso aos principais menus do sistema.
+- **Menus de Navegação**: Os menus são acessíveis através de botões na tela principal, permitindo fácil acesso às funcionalidades de cadastro e relatórios.
+
 ## Tecnologias Utilizadas
 
 - **Linguagem:** Java
@@ -48,8 +66,11 @@ Este projeto utiliza as seguintes dependências:
 
    ## Créditos e Licença dos Ícones
 
+Os ícones utilizados neste projeto foram obtidos do Flaticon. Abaixo estão os detalhes da licença e os créditos:
 
 ### Licença dos Ícones
 Os ícones usados são fornecidos por [Flaticon](https://www.flaticon.com) e estão sujeitos à licença da plataforma.
+
+
 
 
