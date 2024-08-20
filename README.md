@@ -4,7 +4,7 @@ Este é um sistema de controle de Ordem de Serviço (OS) desenvolvido em Java. O
 
 ## Funcionalidades
 
-- **Emitir OS:** Criação de Ordem de serviço.
+- **Emitir OS:** Criação de Ordem de Serviço.
 - **Consultar OS:** Permite buscar ordens de serviço existentes.
 - **Atualizar OS:** Atualiza informações de ordens de serviço existentes.
 - **Excluir OS:** Remove ordens de serviço do sistema.
@@ -40,19 +40,10 @@ Este projeto utiliza as seguintes dependências:
 
 ## Configuração
 
-1. **Banco de Dados**: Certifique-se de que o MySQL está instalado e configurado corretamente.
-2. **Dependências**: As dependências estão listadas no `pom.xml`. Utilize o Maven para gerenciá-las.
-3. **Compilação**: Para compilar o projeto, execute:
-
-## Estrutura do Banco de Dados
-
-1. A estrutura do banco de dados está documentada no arquivo [dbcalhas.md](dbcalhas.md).
-2. A estruruta da query no JasperSoft para criação dos relatórios está documentada no arquivo [dbqueryJreport.md](dbqueryJreport.md).
-
-## Como Executar o Projeto
-
-1. **Clone o repositório:**
+1. **Banco de Dados:** Certifique-se de que o MySQL está instalado e configurado corretamente.
+2. **Dependências:** As dependências estão listadas no `pom.xml`. Utilize o Maven para gerenciá-las.
+3. **Compilação:** Para compilar o projeto, execute:
    ```bash
-   git clone https://github.com/seuusuario/seurepositorio.git
+   mvn clean install
 
 
