@@ -8,8 +8,8 @@ public class ModuloConexao {
 
     // As variáveis abaixo servem para o programa encontrar o caminho do banco de dados
     private static final String url = "jdbc:mysql://localhost:3306/calhas";
-    private static final String user = "root";
-    private static final String password = "12345";
+    private static final String user = "";
+    private static final String password = "";
     
    private static Connection conn ;
    
